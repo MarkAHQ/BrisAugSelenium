@@ -28,4 +28,8 @@ public class MatchingFunctions {
     }
 
     //public static BiFunction<Planet, Planet, Planet>
+
+    public static Matchable nameMatchable(String name) {
+        return planet -> planet.getName().equals(name);
+    }
 }

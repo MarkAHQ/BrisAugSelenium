@@ -69,4 +69,14 @@ public class PlanetPage {
 
         return planets;
     }
+
+    public Planet getPlanet(Matchable matchingStrategy) {
+        for(Planet planet : getPlanets()) {
+            if (matchingStrategy.match(planet)) {
+                return planet;
+            }
+        }
+
+        throw new NotFoundException();
+    }
 }
