@@ -1,3 +1,5 @@
+package com.accesshq.ui;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -45,7 +47,7 @@ public class HomePage {
         return driver.findElement(By.cssSelector("[aria-label=users]"));
     }
 
-    public WebDialog getActiveDialog() {
-        return new WebDialog(driver.findElement(By.className("v-dialog--active")));
+    public void clickPlanetButton() {
+        driver.findElement(By.cssSelector("[aria-label=planets]")).click();
     }
 }

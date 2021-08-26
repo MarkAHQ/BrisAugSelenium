@@ -1,3 +1,7 @@
+package com.accesshq.tests;
+
+import com.accesshq.ui.HomePage;
+import com.accesshq.ui.WebDialog;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,7 +11,6 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class PlaygroundTestSuite {
@@ -48,11 +51,16 @@ public class PlaygroundTestSuite {
 
     @Test
     public void LoginDialog_Login_ErrorMessagesTest() {
-        var homePage = new HomePage(driver);
-        homePage.clickProfileElement();
-        homePage.getActiveDialog().clickLoginButton();
-        ArrayList<WebElement> errorMessages = homePage.getActiveDialog().getErrorMessages();
-        for(WebElement messageElement : errorMessages) {
+        //Arrange
+        new HomePage(driver).clickProfileElement();
+
+        //Act
+        var webDialog = new WebDialog(driver);
+        webDialog.clickLoginButton();
+        var errorMessages = webDialog.getErrorMessages();
+
+        //Assert
+        for(var messageElement : errorMessages) {
             Assertions.assertEquals("Invalid user and password", messageElement.getText());
         }
     }
@@ -68,9 +76,9 @@ public class PlaygroundTestSuite {
 
         DoWithoutImplicit(driver, () -> {
             //Assert
-            Assertions.assertEquals("Your name is required", driver.findElement(By.id("name-err")));
-            Assertions.assertEquals("Your email is required", driver.findElement(By.id("email-err")));
-            Assertions.assertEquals("You must agree to continue", driver.findElement(By.id("agree-err")));
+            Assertions.assertEquals("Your name is required", driver.findElement(By.id("name-err")).getText());
+            Assertions.assertEquals("Your email is required", driver.findElement(By.id("email-err")).getText());
+            Assertions.assertEquals("You must agree to continue", driver.findElement(By.id("agree-err")).getText());
         });
     }
 
@@ -107,29 +115,14 @@ public class PlaygroundTestSuite {
     }
 
     private void clickButton(String buttonName) {
+        buttonName = buttonName.toLowerCase();
         WebElement form = driver.findElement(By.className("modern"));
         for (var button : form.findElements(By.tagName("button"))) {
-            if (button.getText().contains(buttonName.toLowerCase())) {
+            if (button.getText().toLowerCase().contains(buttonName)) {
                 button.click();
                 break;
             }
         }
-    }
-
-    @Test
-    public void atest() {
-        //Arrange
-        driver.findElement(By.cssSelector("[aria-label=forms]")).click();
-        var form = driver.findElement(By.className("modern"));
-
-        clickButton("submit");
-
-        //Act
-        driver.findElement(By.id("name")).sendKeys("Mark");
-        driver.findElement(By.id("email")).sendKeys("Mark@email.com");
-        driver.findElement(By.cssSelector("[for=agree]")).click();
-
-        var errorMessages = driver.findElements(By.cssSelector(".form-error.mb-4"));
     }
 
     @AfterEach
