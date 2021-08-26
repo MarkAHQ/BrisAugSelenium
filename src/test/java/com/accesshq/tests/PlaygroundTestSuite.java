@@ -7,6 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class PlaygroundTestSuite {
@@ -47,14 +48,11 @@ public class PlaygroundTestSuite {
 
     @Test
     public void LoginDialog_Login_ErrorMessagesTest() {
-        driver.findElement(By.cssSelector("[aria-label=users]")).click();
-
-        var dialog = driver.findElement(By.className("v-dialog--active"));
-        dialog.findElement(By.id("loginButton")).click();
-        var errorMessages = dialog.findElements(By.className("v-messages__message"));
-        new WebDriverWait(driver, 1000).until(ExpectedConditions.visibilityOf(errorMessages.get(0)));
-
-        for(var messageElement : errorMessages) {
+        var homePage = new HomePage(driver);
+        homePage.clickProfileElement();
+        homePage.getActiveDialog().clickLoginButton();
+        ArrayList<WebElement> errorMessages = homePage.getActiveDialog().getErrorMessages();
+        for(WebElement messageElement : errorMessages) {
             Assertions.assertEquals("Invalid user and password", messageElement.getText());
         }
     }

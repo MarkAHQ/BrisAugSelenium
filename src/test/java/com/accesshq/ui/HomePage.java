@@ -4,6 +4,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.awt.*;
+
 public class HomePage {
 
     private final WebDriver driver;
@@ -41,5 +43,9 @@ public class HomePage {
 
     private WebElement getUsersElement() {
         return driver.findElement(By.cssSelector("[aria-label=users]"));
+    }
+
+    public WebDialog getActiveDialog() {
+        return new WebDialog(driver.findElement(By.className("v-dialog--active")));
     }
 }
