@@ -1,9 +1,6 @@
 package com.accesshq.tests;
 
-import com.accesshq.strategies.MatchByDistGreater;
-import com.accesshq.strategies.MatchByName;
-import com.accesshq.strategies.Matchable;
-import com.accesshq.strategies.MatchingFunctions;
+import com.accesshq.strategies.*;
 import com.accesshq.ui.*;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
@@ -11,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.text.ParseException;
 import java.util.function.Predicate;
+
+import static com.accesshq.strategies.MatchingFunctionsExample.*;
 
 public class PlanetTestSuite {
 
@@ -55,32 +54,25 @@ public class PlanetTestSuite {
     }
 
     @Test
-    public void PlanetPage_AssertEarthRadius_NewPred() throws ParseException {
-        Assertions.assertEquals(6371,
-                new PlanetPage(driver).getPlanet(new Predicate<Planet>() {
-                    @Override
-                    public boolean test(Planet planet) {
-                        return planet.getName().equals("Earth");
-                    }
-                }).getRadius());
+    public void PlanetPage_AssertEarthRadius_newMatchingStrat() throws ParseException {
+        Assertions.assertEquals(6371, new PlanetPage(driver).
+                getPlanet(MatchingFunctionsExample.getPlanetByName("Earth")));
     }
 
     @Test
-    public void PlanetPage_AssertEarthRadius_newMatchingStrat() throws ParseException {
-        Assertions.assertEquals(6371,
-                                new PlanetPage(driver).getPlanet(new Matchable() {
-                                    @Override
-                                    public boolean match(Planet planet) {
-                                        return planet.getName().equals("Earth");
-                                    }
-                                }).getRadius());
+    public void clickExploreButtons() {
+
+        for (var planet : new PlanetPage(driver).getPlanets()) {
+            planet.clickExplore();
+            Assertions.assertEquals("You are exploring " + planet.getName(), driver);
+        }
     }
 
     @Test
     public void PlanetPage_AssertEarthRadius_MatchingStratLam() throws ParseException {
         Assertions.assertEquals(6371,
                                 new PlanetPage(driver)
-                                        .getPlanet((Matchable) planet -> planet.getName().equals("Earth")).getRadius());
+                                        .getPlanet(getPlanetByName("Earth")).getRadius());
     }
 
     @Test

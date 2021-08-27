@@ -40,7 +40,7 @@ public class HomePage {
     }
 
     public void waitUntilAlertMsgVisible() {
-        new WebDriverWait(driver, 3).until(ExpectedConditions.visibilityOf(getAlertMsgElement()));
+        new WebDriverWait(driver, 3).until(d -> getAlertMsgElement().isDisplayed());
     }
 
     private WebElement getUsersElement() {

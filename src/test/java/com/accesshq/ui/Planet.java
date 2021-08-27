@@ -21,9 +21,15 @@ public class Planet {
         this.planetElement = planetElement;
     }
 
-    public float getRadius() throws ParseException {
+    public float getRadius() {
         var radiusString = planetElement.findElement(By.className("radius")).getText();
-        return NumberFormat.getNumberInstance().parse(radiusString.split(" ")[0]).floatValue();
+        try {
+            var result = NumberFormat.getNumberInstance().parse(radiusString.split(" ")[0]).floatValue();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        throw new NotFoundException();
     }
 
     public String getName() {
@@ -39,5 +45,9 @@ public class Planet {
         }
 
         throw new NotFoundException();
+    }
+
+    public void clickExplore() {
+        planetElement.findElement(By.className("v-btn-content")).click();
     }
 }

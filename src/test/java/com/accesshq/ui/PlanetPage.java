@@ -50,16 +50,6 @@ public class PlanetPage {
         throw new Exception("Couldn't match using: " + matchingStrategy.getClass().toGenericString());
     }
 
-    public Planet getPlanet(Predicate<Planet> matcher) {
-        for(Planet planet : getPlanets()) {
-            if (matcher.test(planet)) {
-                return planet;
-            }
-        }
-
-        throw new NotFoundException();
-    }
-
     public List<Planet> getPlanets() {
         ArrayList<Planet> planets = new ArrayList<>();
 
@@ -73,6 +63,16 @@ public class PlanetPage {
     public Planet getPlanet(Matchable matchingStrategy) {
         for(Planet planet : getPlanets()) {
             if (matchingStrategy.match(planet)) {
+                return planet;
+            }
+        }
+
+        throw new NotFoundException();
+    }
+
+    public Planet getPlanet(Predicate<Planet> matchingStrategy) {
+        for(Planet planet : getPlanets()) {
+            if (matchingStrategy.test(planet)) {
                 return planet;
             }
         }
